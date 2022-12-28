@@ -63,8 +63,19 @@ const Platforms: Platform[] = [
         sourceCodeUrl: 'https://github.com/kinosang/cloudEmoji_win',
         authors: [
             {
-                name: 'Simon Chan',
+                name: 'Chino Chang',
                 url: 'https://github.com/kinosang',
+            }
+        ]
+    },
+    {
+        _platformDetectName: '',
+        name: 'Windows Phone',
+        sourceCodeUrl: 'https://github.com/yume-chan/cloud-emoticon-net',
+        authors: [
+            {
+                name: "Simon Chan",
+                url: 'https://github.com/yume-chan'
             }
         ]
     }
@@ -98,7 +109,7 @@ export default function Home() {
             setDetectedPlatform(_platformByPlatformDetectName['ios']);
         } else if (platform.windows) {
             setDetectedPlatform(_platformByPlatformDetectName['windows']);
-        }
+        } else if (platform.windows)
         setDetectingPlatform(false)
     }, [])
 
