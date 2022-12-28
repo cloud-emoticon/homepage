@@ -2,6 +2,7 @@ import {Box, Button, Grid, IconButton, Modal, Stack, Typography} from "@mui/mate
 import Link from '@mui/material/Link';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import React, {useEffect, useState} from "react";
+import Image from 'next/image';
 // @ts-ignore
 import platform from 'platform-detect'
 
@@ -128,7 +129,14 @@ export default function Home() {
                         spacing={1}
                     >
                         <Typography variant="h4" component="div">
-                            在云中找到你所爱的颜文字
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems='center'
+                            >
+                                <Image src="/icon.png" width={48} height={48} alt="cloud emoticon icon" />
+                                <span>在云中找到你所爱的颜文字</span>
+                            </Stack>
                         </Typography>
                         <Typography variant="h6" display="div">
                             这款App能够从远程服务器上下载颜文字源，将它们在分类的列表中展示出来，并让你一键复制。
@@ -248,7 +256,8 @@ export default function Home() {
                                             {p.name}
                                         </Typography>
                                         <Typography>
-                                            {p.downloadUrl && <>{' '}<Link href={p.downloadUrl}>下载</Link></>}{<>{' '}<Link
+                                            {p.downloadUrl && <>{' '}<Link
+                                              href={p.downloadUrl}>下载</Link></>}{<>{' '}<Link
                                             href={p.sourceCodeUrl}>源代码</Link></>}
                                         </Typography>
                                         <Typography variant="caption" display="block">
