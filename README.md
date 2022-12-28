@@ -1,5 +1,5 @@
 # homepage
-Homepage for https://emoticon.moe
+https://emoticon.moe
 
 ## Prerequisites
 * `Node.js` and `yarn`
