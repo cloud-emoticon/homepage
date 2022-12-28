@@ -109,7 +109,7 @@ export default function Home() {
             setDetectedPlatform(_platformByPlatformDetectName['ios']);
         } else if (platform.windows) {
             setDetectedPlatform(_platformByPlatformDetectName['windows']);
-        } else if (platform.windows)
+        }
         setDetectingPlatform(false)
     }, [])
 
@@ -185,10 +185,10 @@ export default function Home() {
                           <Typography variant="caption" display="block">
                             开发者 {detectedPlatform?.authors.map(author => {
                               return (
-                                  <>
-                                      <Link key={author.url} href={author.url}>{author.name}</Link>
+                                  <span key={author.url}>
+                                      <Link href={author.url}>{author.name}</Link>
                                       <span>{' '}</span>
-                                  </>
+                                  </span>
                               )
                           })}
                           </Typography>
@@ -209,10 +209,10 @@ export default function Home() {
                           <Typography variant="caption" display="block">
                             正在使用 {detectedPlatform.auxiliaryPlatform.name} ？你也可以{detectedPlatform.auxiliaryPlatform.downloadUrl ? '试试' : '自行编译'} {detectedPlatform.auxiliaryPlatform.authors.map(author => {
                               return (
-                                  <>
-                                      <Link key={author.url} href={author.url}>{author.name}</Link>
+                                  <span key={author.url}>
+                                      <Link href={author.url}>{author.name}</Link>
                                       <span>{' '}</span>
-                                  </>
+                                  </span>
                               )
                           })} 的 <Link
                             href={detectedPlatform.auxiliaryPlatform.downloadUrl ? detectedPlatform.auxiliaryPlatform.downloadUrl : detectedPlatform.auxiliaryPlatform.sourceCodeUrl}>{detectedPlatform.auxiliaryPlatform.name} 版本</Link>
@@ -254,10 +254,10 @@ export default function Home() {
                                         <Typography variant="caption" display="block">
                                             开发者 {p.authors.map(author => {
                                             return (
-                                                <>
-                                                    <Link key={author.url} href={author.url}>{author.name}</Link>
+                                                <span key={author.url}>
+                                                    <Link href={author.url}>{author.name}</Link>
                                                     <span>{' '}</span>
-                                                </>
+                                                </span>
                                             )
                                         })}
                                         </Typography>
@@ -267,10 +267,10 @@ export default function Home() {
                                             href={p.auxiliaryPlatform.downloadUrl}>下载</Link></>}{<>{' '}<Link
                                               href={p.auxiliaryPlatform.sourceCodeUrl}>源代码</Link></>} 开发者 {p.auxiliaryPlatform.authors.map(author => {
                                               return (
-                                                  <>
-                                                      <Link key={author.url} href={author.url}>{author.name}</Link>
+                                                  <span key={author.url}>
+                                                      <Link href={author.url}>{author.name}</Link>
                                                       <span>{' '}</span>
-                                                  </>
+                                                  </span>
                                               )
                                           })}
                                           </Typography>
