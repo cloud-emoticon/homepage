@@ -11,19 +11,19 @@ interface Author {
     url: string
 }
 
-interface AuxiliaryPlatform {
+interface App {
     name: string,
     downloadUrl?: string,
     sourceCodeUrl: string,
     authors: Author[],
 }
 
-interface Platform extends AuxiliaryPlatform {
+interface Platform extends App {
     _platformDetectName: string
-    auxiliaryPlatform?: AuxiliaryPlatform,
+    alternativeApp?: App,
 }
 
-const Platforms: Platform[] = [
+const NativePlatforms: Platform[] = [
     {
         _platformDetectName: 'android',
         name: 'Android',
@@ -33,7 +33,7 @@ const Platforms: Platform[] = [
             name: 'KTachibanaM',
             url: 'https://twitter.com/KTachibana_M'
         }],
-        auxiliaryPlatform: {
+        alternativeApp: {
             name: 'Sony Small App',
             sourceCodeUrl: 'https://github.com/cloud-emoticon/SmallCloudEmoji',
             authors: [{
@@ -61,13 +61,20 @@ const Platforms: Platform[] = [
     {
         _platformDetectName: 'windows',
         name: 'Windows',
-        sourceCodeUrl: 'https://github.com/kinosang/cloudEmoji_win',
-        authors: [
-            {
+        downloadUrl: 'https://github.com/cloud-emoticon/cloudemoticon-web/releases',
+        sourceCodeUrl: 'https://github.com/cloud-emoticon/cloudemoticon-web',
+        authors: [{
+            name: 'KTachibanaM',
+            url: 'https://twitter.com/KTachibana_M'
+        }],
+        alternativeApp: {
+            name: '原生 Windows',
+            sourceCodeUrl: 'https://github.com/kinosang/cloudEmoji_win',
+            authors: [{
                 name: 'Chino Chang',
                 url: 'https://github.com/kinosang',
-            }
-        ]
+            }],
+        }
     },
     {
         _platformDetectName: '',
@@ -82,8 +89,19 @@ const Platforms: Platform[] = [
     }
 ]
 
-const _platformByPlatformDetectName: { [key: string]: Platform | undefined } = Object.fromEntries(Platforms.map(p => {
-    return [p._platformDetectName, Platforms.find(_p => _p._platformDetectName === p._platformDetectName)]
+const WebPlatform: Platform = {
+    _platformDetectName: '',
+    name: 'Web',
+    sourceCodeUrl: 'https://github.com/cloud-emoticon/cloudemoticon-web',
+    downloadUrl: 'https://web.emoticon.moe',
+    authors: [{
+        name: 'KTachibanaM',
+        url: 'https://twitter.com/KTachibana_M'
+    }],
+}
+
+const _platformByPlatformDetectName: { [key: string]: Platform | undefined } = Object.fromEntries(NativePlatforms.map(p => {
+    return [p._platformDetectName, NativePlatforms.find(_p => _p._platformDetectName === p._platformDetectName)]
 }))
 
 const modalStyle = {
@@ -110,6 +128,8 @@ export default function Home() {
             setDetectedPlatform(_platformByPlatformDetectName['ios']);
         } else if (platform.windows) {
             setDetectedPlatform(_platformByPlatformDetectName['windows']);
+        } else {
+            setDetectedPlatform(WebPlatform);
         }
         setDetectingPlatform(false)
     }, [])
@@ -139,7 +159,7 @@ export default function Home() {
                             </Stack>
                         </Typography>
                         <Typography variant="h6" display="div">
-                            您的颜文字伴侣
+                            您的颜文字 ლ(╹◡╹ლ) ( っ*'ω'*c) (っ╹ ◡ ╹ )っ💊 ╮( ๑╹,◡╹ ๑) ╭ ( っ´ω`c)♡ ю┐(ԾωԾ) 伴侣
                         </Typography>
                         {!detectingPlatform
                             && (detectedPlatform ?
@@ -153,7 +173,7 @@ export default function Home() {
                                                 variant="contained"
                                                 size='large'
                                             >
-                                                {`${detectedPlatform.downloadUrl ? '下载' : '尚未正式发布，自行编译'} ${detectedPlatform.name} 版本`}
+                                                {`${detectedPlatform.downloadUrl ? '' : '尚未正式发布，自行编译'} ${detectedPlatform.name} 版`}
                                             </Button>
                                         </Link>
                                         {detectedPlatform && detectedPlatform.downloadUrl &&
@@ -205,9 +225,9 @@ export default function Home() {
                             </Typography>
                         </Link>
                         {
-                            detectedPlatform && detectedPlatform.auxiliaryPlatform &&
+                            detectedPlatform && detectedPlatform.alternativeApp &&
                           <Typography variant="caption" display="block">
-                            正在使用 {detectedPlatform.auxiliaryPlatform.name} ？你也可以{detectedPlatform.auxiliaryPlatform.downloadUrl ? '试试' : '自行编译'} {detectedPlatform.auxiliaryPlatform.authors.map(author => {
+                            {detectedPlatform.alternativeApp.name} ？你也可以{detectedPlatform.alternativeApp.downloadUrl ? '试试' : '自行编译'} {detectedPlatform.alternativeApp.authors.map(author => {
                               return (
                                   <span key={author.url}>
                                       <Link href={author.url}>{author.name}</Link>
@@ -215,12 +235,12 @@ export default function Home() {
                                   </span>
                               )
                           })} 的 <Link
-                            href={detectedPlatform.auxiliaryPlatform.downloadUrl ? detectedPlatform.auxiliaryPlatform.downloadUrl : detectedPlatform.auxiliaryPlatform.sourceCodeUrl}>{detectedPlatform.auxiliaryPlatform.name} 版本</Link>
+                            href={detectedPlatform.alternativeApp.downloadUrl ? detectedPlatform.alternativeApp.downloadUrl : detectedPlatform.alternativeApp.sourceCodeUrl}>{detectedPlatform.alternativeApp.name} 版</Link>
                               {
-                                  detectedPlatform.auxiliaryPlatform.downloadUrl &&
+                                  detectedPlatform.alternativeApp.downloadUrl &&
                                 <>
                                     {' '}
-                                  <Link href={detectedPlatform.auxiliaryPlatform.sourceCodeUrl}>（源代码）</Link>
+                                  <Link href={detectedPlatform.alternativeApp.sourceCodeUrl}>（源代码）</Link>
                                 </>
                               }
                           </Typography>
@@ -241,17 +261,30 @@ export default function Home() {
                             <Typography variant="h6" component="h2">
                                 所有平台
                             </Typography>
-                            {Platforms.map(p => {
+                            {NativePlatforms.map(p => {
                                 return (
                                     <Stack key={p.name}>
-                                        <Typography>
-                                            {p.name}
-                                        </Typography>
-                                        <Typography>
-                                            {p.downloadUrl && <>{' '}<Link
-                                              href={p.downloadUrl}>下载</Link></>}{<>{' '}<Link
-                                            href={p.sourceCodeUrl}>源代码</Link></>}
-                                        </Typography>
+                                        <Stack
+                                            direction="row"
+                                            alignItems='center'
+                                            spacing={1}
+                                        >
+                                            {p.downloadUrl ?
+                                                <Link href={p.downloadUrl}>
+                                                    <Typography>
+                                                        {p.name}
+                                                    </Typography>
+                                                </Link> :
+                                                <Typography>
+                                                    {p.name}
+                                                </Typography>
+                                            }
+                                            <Link href={p.sourceCodeUrl}>
+                                                <GitHubIcon fontSize="small"/>
+                                            </Link>
+                                        </Stack>
+                                        
+                                       
                                         <Typography variant="caption" display="block">
                                             开发者 {p.authors.map(author => {
                                             return (
@@ -262,11 +295,11 @@ export default function Home() {
                                             )
                                         })}
                                         </Typography>
-                                        {p.auxiliaryPlatform &&
+                                        {p.alternativeApp &&
                                           <Typography variant="caption" display="block">
-                                              {p.auxiliaryPlatform.name} 版本 {p.auxiliaryPlatform.downloadUrl && <>{' '}<Link
-                                            href={p.auxiliaryPlatform.downloadUrl}>下载</Link></>}{<>{' '}<Link
-                                              href={p.auxiliaryPlatform.sourceCodeUrl}>源代码</Link></>} 开发者 {p.auxiliaryPlatform.authors.map(author => {
+                                              {p.alternativeApp.name} 版 {p.alternativeApp.downloadUrl && <>{' '}<Link
+                                              href={p.alternativeApp.downloadUrl}>下载</Link></>}{<>{' '}<Link
+                                              href={p.alternativeApp.sourceCodeUrl}>源代码</Link></>} 开发者 {p.alternativeApp.authors.map(author => {
                                               return (
                                                   <span key={author.url}>
                                                       <Link href={author.url}>{author.name}</Link>
