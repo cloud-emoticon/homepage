@@ -1,6 +1,7 @@
 import {Box, Button, Grid, IconButton, Modal, Stack, Typography} from "@mui/material";
 import Link from '@mui/material/Link';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import CodeIcon from '@mui/icons-material/Code';
+import CircularProgress from '@mui/material/CircularProgress';
 import React, {useEffect, useState} from "react";
 import Image from 'next/image';
 // @ts-ignore
@@ -16,6 +17,7 @@ interface App {
     downloadUrl?: string,
     sourceCodeUrl: string,
     authors: Author[],
+    experimental?: boolean,
 }
 
 interface Platform extends App {
@@ -23,7 +25,18 @@ interface Platform extends App {
     alternativeApp?: App,
 }
 
-const NativePlatforms: Platform[] = [
+const WebPlatform: Platform = {
+    _platformDetectName: '',
+    name: 'Web',
+    sourceCodeUrl: 'https://github.com/cloud-emoticon/cloudemoticon-web',
+    downloadUrl: 'https://web.emoticon.moe',
+    authors: [{
+        name: 'KTachibanaM',
+        url: 'https://twitter.com/KTachibana_M'
+    }],
+}
+
+const AllPlatforms: Platform[] = [
     {
         _platformDetectName: 'android',
         name: 'Android',
@@ -76,6 +89,7 @@ const NativePlatforms: Platform[] = [
             }],
         }
     },
+    WebPlatform,
     {
         _platformDetectName: '',
         name: 'Windows Phone',
@@ -89,19 +103,8 @@ const NativePlatforms: Platform[] = [
     }
 ]
 
-const WebPlatform: Platform = {
-    _platformDetectName: '',
-    name: 'Web',
-    sourceCodeUrl: 'https://github.com/cloud-emoticon/cloudemoticon-web',
-    downloadUrl: 'https://web.emoticon.moe',
-    authors: [{
-        name: 'KTachibanaM',
-        url: 'https://twitter.com/KTachibana_M'
-    }],
-}
-
-const _platformByPlatformDetectName: { [key: string]: Platform | undefined } = Object.fromEntries(NativePlatforms.map(p => {
-    return [p._platformDetectName, NativePlatforms.find(_p => _p._platformDetectName === p._platformDetectName)]
+const _platformByPlatformDetectName: { [key: string]: Platform | undefined } = Object.fromEntries(AllPlatforms.map(p => {
+    return [p._platformDetectName, AllPlatforms.find(_p => _p._platformDetectName === p._platformDetectName)]
 }))
 
 const modalStyle = {
@@ -116,7 +119,6 @@ const modalStyle = {
 };
 
 export default function Home() {
-    const [detectingPlatform, setDetectingPlatform] = useState(true);
     const [detectedPlatform, setDetectedPlatform] = useState<Platform | undefined>(undefined)
     const [modalOpen, setModalOpen] = useState(false);
     const onModalClose = () => setModalOpen(false);
@@ -131,7 +133,6 @@ export default function Home() {
         } else {
             setDetectedPlatform(WebPlatform);
         }
-        setDetectingPlatform(false)
     }, [])
 
     return (
@@ -161,57 +162,68 @@ export default function Home() {
                         <Typography variant="h6" display="div">
                             {"您的颜文字 ლ(╹◡╹ლ) ( っ*'ω'*c) (っ╹ ◡ ╹ )っ💊 ╮( ๑╹,◡╹ ๑) ╭ ( っ´ω`c)♡ ю┐(ԾωԾ) 伴侣"}
                         </Typography>
-                        {!detectingPlatform
-                            && (detectedPlatform ?
-                                    <Stack
-                                        direction="row"
-                                        alignItems='center'
+                        {detectedPlatform ?
+                            <Stack
+                                direction="row"
+                                alignItems='center'
+                            >
+                                <Link
+                                    href={detectedPlatform.downloadUrl ? detectedPlatform.downloadUrl : detectedPlatform.sourceCodeUrl}>
+                                    <Button
+                                        variant="contained"
+                                        size='large'
                                     >
-                                        <Link
-                                            href={detectedPlatform.downloadUrl ? detectedPlatform.downloadUrl : detectedPlatform.sourceCodeUrl}>
-                                            <Button
-                                                variant="contained"
-                                                size='large'
-                                            >
-                                                {`${detectedPlatform.downloadUrl ? '' : '尚未正式发布，自行编译'} ${detectedPlatform.name} 版`}
-                                            </Button>
-                                        </Link>
-                                        {detectedPlatform && detectedPlatform.downloadUrl &&
-                                          <Link href={detectedPlatform.sourceCodeUrl}>
-                                            <IconButton
-                                              size='large'
-                                            >
-                                              <GitHubIcon/>
-                                            </IconButton>
-                                          </Link>
-                                        }
-                                    </Stack> :
-                                    <Stack
-                                        direction="row"
-                                        alignItems='center'
-                                    >
-                                        <Button
-                                            variant="contained"
-                                            size='large'
-                                            disabled={true}
-                                        >
-                                            该平台的版本尚未开发，敬请期待
-                                        </Button>
-                                    </Stack>
-                            )
+                                        {`${detectedPlatform.downloadUrl ? '' : '尚未正式发布，自行编译'} ${detectedPlatform.name} 版`}
+                                    </Button>
+                                </Link>
+                                {detectedPlatform && detectedPlatform.downloadUrl &&
+                                    <Link href={detectedPlatform.sourceCodeUrl}>
+                                        <IconButton size='large'>
+                                            <CodeIcon/>
+                                        </IconButton>
+                                    </Link>
+                                }
+                            </Stack> :
+                            <CircularProgress />
                         }
                         {
                             detectedPlatform && detectedPlatform.authors &&
-                          <Typography variant="caption" display="block">
-                            开发者 {detectedPlatform?.authors.map(author => {
-                              return (
-                                  <span key={author.url}>
-                                      <Link href={author.url}>{author.name}</Link>
-                                      <span>{' '}</span>
-                                  </span>
-                              )
-                          })}
-                          </Typography>
+                                <Typography variant="caption" display="block">
+                                    开发者 {detectedPlatform?.authors.map(author => {
+                                    return (
+                                        <span key={author.url}>
+                                            <Link href={author.url}>{author.name}</Link>
+                                            <span>{' '}</span>
+                                        </span>
+                                    )
+                                })}
+                                </Typography>
+                        }
+                        {
+                            detectedPlatform && detectedPlatform.alternativeApp &&
+                                <Typography variant="caption" display="block">
+                                    你也可以{detectedPlatform.alternativeApp.downloadUrl ? '试试' : '自行编译'} {detectedPlatform.alternativeApp.authors.map(author => {
+                                        return (
+                                            <span key={author.url}>
+                                                <Link href={author.url}>{author.name}</Link>
+                                                <span>{' '}</span>
+                                            </span>
+                                        )
+                                    })} 的
+                                    <Link
+                                        href={detectedPlatform.alternativeApp.downloadUrl ? detectedPlatform.alternativeApp.downloadUrl : detectedPlatform.alternativeApp.sourceCodeUrl}
+                                    >
+                                        {detectedPlatform.alternativeApp.name} 版
+                                    </Link>
+                                    {
+                                        detectedPlatform.alternativeApp.downloadUrl &&
+                                            <Link href={detectedPlatform.alternativeApp.sourceCodeUrl}>
+                                                <IconButton size='small'>
+                                                    <CodeIcon/>
+                                                </IconButton>
+                                            </Link>
+                                    }
+                                </Typography>
                         }
                         <Link
                             href='#'
@@ -221,30 +233,9 @@ export default function Home() {
                             }}
                         >
                             <Typography variant="caption" display="block">
-                                其他平台
+                                所有平台
                             </Typography>
                         </Link>
-                        {
-                            detectedPlatform && detectedPlatform.alternativeApp &&
-                          <Typography variant="caption" display="block">
-                            {detectedPlatform.alternativeApp.name} ？你也可以{detectedPlatform.alternativeApp.downloadUrl ? '试试' : '自行编译'} {detectedPlatform.alternativeApp.authors.map(author => {
-                              return (
-                                  <span key={author.url}>
-                                      <Link href={author.url}>{author.name}</Link>
-                                      <span>{' '}</span>
-                                  </span>
-                              )
-                          })} 的 <Link
-                            href={detectedPlatform.alternativeApp.downloadUrl ? detectedPlatform.alternativeApp.downloadUrl : detectedPlatform.alternativeApp.sourceCodeUrl}>{detectedPlatform.alternativeApp.name} 版</Link>
-                              {
-                                  detectedPlatform.alternativeApp.downloadUrl &&
-                                <>
-                                    {' '}
-                                  <Link href={detectedPlatform.alternativeApp.sourceCodeUrl}>（源代码）</Link>
-                                </>
-                              }
-                          </Typography>
-                        }
                     </Stack>
                 </Grid>
                 <Modal
@@ -261,7 +252,7 @@ export default function Home() {
                             <Typography variant="h6" component="h2">
                                 所有平台
                             </Typography>
-                            {NativePlatforms.map(p => {
+                            {AllPlatforms.map(p => {
                                 return (
                                     <Stack key={p.name}>
                                         <Stack
@@ -280,11 +271,9 @@ export default function Home() {
                                                 </Typography>
                                             }
                                             <Link href={p.sourceCodeUrl}>
-                                                <GitHubIcon fontSize="small"/>
+                                                <CodeIcon fontSize="small"/>
                                             </Link>
                                         </Stack>
-                                        
-                                       
                                         <Typography variant="caption" display="block">
                                             开发者 {p.authors.map(author => {
                                             return (
@@ -296,18 +285,38 @@ export default function Home() {
                                         })}
                                         </Typography>
                                         {p.alternativeApp &&
-                                          <Typography variant="caption" display="block">
-                                              {p.alternativeApp.name} 版 {p.alternativeApp.downloadUrl && <>{' '}<Link
-                                              href={p.alternativeApp.downloadUrl}>下载</Link></>}{<>{' '}<Link
-                                              href={p.alternativeApp.sourceCodeUrl}>源代码</Link></>} 开发者 {p.alternativeApp.authors.map(author => {
-                                              return (
-                                                  <span key={author.url}>
-                                                      <Link href={author.url}>{author.name}</Link>
-                                                      <span>{' '}</span>
-                                                  </span>
-                                              )
-                                          })}
-                                          </Typography>
+                                            <Stack
+                                                direction="row"
+                                                alignItems='center'
+                                                spacing={1}
+                                            >
+                                                {
+                                                    p.alternativeApp.downloadUrl ?
+                                                    <Link href={p.alternativeApp.downloadUrl}>
+                                                        <Typography variant="caption">
+                                                            {p.alternativeApp.name} 版
+                                                        </Typography>
+                                                    </Link> :
+                                                    <Typography variant="caption">
+                                                        {p.alternativeApp.name} 版
+                                                    </Typography>
+                                                }
+                                                <Link
+                                                    href={p.alternativeApp.sourceCodeUrl}
+                                                >
+                                                    <CodeIcon fontSize="small"/>
+                                                </Link>
+                                                <Typography variant="caption">
+                                                    开发者 {p.alternativeApp.authors.map(author => {
+                                                        return (
+                                                            <span key={author.url}>
+                                                                <Link href={author.url}>{author.name}</Link>
+                                                                <span>{' '}</span>
+                                                            </span>
+                                                        )
+                                                    })}
+                                                </Typography>
+                                            </Stack>
                                         }
                                     </Stack>
                                 )
