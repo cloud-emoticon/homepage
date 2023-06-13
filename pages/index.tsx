@@ -2,6 +2,7 @@ import {Box, Button, Grid, IconButton, Modal, Stack, Typography} from "@mui/mate
 import Link from '@mui/material/Link';
 import CodeIcon from '@mui/icons-material/Code';
 import CircularProgress from '@mui/material/CircularProgress';
+import Chip from '@mui/material/Chip';
 import React, {useEffect, useState} from "react";
 import Image from 'next/image';
 // @ts-ignore
@@ -34,6 +35,7 @@ const WebPlatform: Platform = {
         name: 'KTachibanaM',
         url: 'https://twitter.com/KTachibana_M'
     }],
+    experimental: true,
 }
 
 const AllPlatforms: Platform[] = [
@@ -80,6 +82,7 @@ const AllPlatforms: Platform[] = [
             name: 'KTachibanaM',
             url: 'https://twitter.com/KTachibana_M'
         }],
+        experimental: true,
         alternativeApp: {
             name: '原生 Windows',
             sourceCodeUrl: 'https://github.com/kinosang/cloudEmoji_win',
@@ -147,6 +150,7 @@ export default function Home() {
                 <Grid item xs={3}>
                     <Stack
                         direction="column"
+                        alignItems="flex-start"
                         spacing={1}
                     >
                         <Typography variant="h4" component="div">
@@ -183,8 +187,12 @@ export default function Home() {
                                         </IconButton>
                                     </Link>
                                 }
+                                
                             </Stack> :
                             <CircularProgress />
+                        }
+                        {detectedPlatform && detectedPlatform.experimental &&
+                            <Chip size="small" label="实验版" color="warning"/>
                         }
                         {
                             detectedPlatform && detectedPlatform.authors &&
@@ -254,7 +262,10 @@ export default function Home() {
                             </Typography>
                             {AllPlatforms.map(p => {
                                 return (
-                                    <Stack key={p.name}>
+                                    <Stack
+                                        key={p.name}
+                                        direction='column'
+                                    >
                                         <Stack
                                             direction="row"
                                             alignItems='center'
@@ -274,6 +285,9 @@ export default function Home() {
                                                 <CodeIcon fontSize="small"/>
                                             </Link>
                                         </Stack>
+                                        {p.experimental &&
+                                            <Typography variant="caption" display="block">实验版</Typography>
+                                        }
                                         <Typography variant="caption" display="block">
                                             开发者 {p.authors.map(author => {
                                             return (
