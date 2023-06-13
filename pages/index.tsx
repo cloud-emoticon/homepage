@@ -135,19 +135,11 @@ export default function Home() {
                                 alignItems='center'
                             >
                                 <Image src="/icon.png" width={48} height={48} alt="cloud emoticon icon" />
-                                <span>在云中找到你所爱的颜文字</span>
+                                <span>云颜文字</span>
                             </Stack>
                         </Typography>
                         <Typography variant="h6" display="div">
-                            这款App能够从远程服务器上下载颜文字源，将它们在分类的列表中展示出来，并让你一键复制。
-                        </Typography>
-                        <Typography variant="h6" display="div">
-                            你只需从这些地方下载你的颜文字列表（JSON或者XML格式），例如你自己的服务器，或者从 <Link
-                            href='/store'
-                            underline='always'>源商店</Link> 里添加别人的源。
-                        </Typography>
-                        <Typography variant="h6" display="div">
-                            这样你就不需要手动折腾输入法，使用不能一键复制的其它云App，或者使用不能自定义的颜文字App。
+                            您的颜文字伴侣
                         </Typography>
                         {!detectingPlatform
                             && (detectedPlatform ?
