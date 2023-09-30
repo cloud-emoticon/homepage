@@ -139,211 +139,204 @@ export default function Home() {
     }, [])
 
     return (
-        <>
-            <Grid
-                container
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-                style={{minHeight: '90vh'}}
-            >
-                <Grid item xs={3}>
-                    <Stack
-                        direction="column"
-                        alignItems="flex-start"
-                        spacing={1}
-                    >
-                        <Typography variant="h4" component="div">
-                            <Stack
-                                direction="row"
-                                spacing={1}
-                                alignItems='center'
-                            >
-                                <Image src="/icon.png" width={48} height={48} alt="cloud emoticon icon" />
-                                <span>云颜文字</span>
-                            </Stack>
-                        </Typography>
-                        <Typography variant="h6" display="div">
-                            {"您的颜文字 ლ(╹◡╹ლ) ( っ*'ω'*c) (っ╹ ◡ ╹ )っ💊 ╮( ๑╹,◡╹ ๑) ╭ ( っ´ω`c)♡ ю┐(ԾωԾ) 伴侣"}
-                        </Typography>
-                        {detectedPlatform ?
-                            <Stack
-                                direction="row"
-                                alignItems='center'
-                            >
-                                <Link
-                                    href={detectedPlatform.downloadUrl ? detectedPlatform.downloadUrl : detectedPlatform.sourceCodeUrl}>
-                                    <Button
-                                        variant="contained"
-                                        size='large'
-                                    >
-                                        {`${detectedPlatform.downloadUrl ? '' : '尚未正式发布，自行编译'} ${detectedPlatform.name} 版`}
-                                    </Button>
+        <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{minHeight: '90vh'}}
+        >
+            <Grid item xs={3}>
+                <Stack
+                    direction="column"
+                    alignItems="flex-start"
+                    spacing={1}
+                >
+                    <Typography variant="h4" component="div">
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            alignItems='center'
+                        >
+                            <Image src="/icon.png" width={48} height={48} alt="cloud emoticon icon" />
+                            <span>云颜文字</span>
+                        </Stack>
+                    </Typography>
+                    <Typography variant="h6" display="div">
+                        {"您的颜文字 ლ(╹◡╹ლ) ( っ*'ω'*c) (っ╹ ◡ ╹ )っ💊 ╮( ๑╹,◡╹ ๑) ╭ ( っ´ω`c)♡ ю┐(ԾωԾ) 伴侣"}
+                    </Typography>
+                    {detectedPlatform ?
+                        <Stack
+                            direction="row"
+                            alignItems='center'
+                        >
+                            <Link
+                                href={detectedPlatform.downloadUrl ? detectedPlatform.downloadUrl : detectedPlatform.sourceCodeUrl}>
+                                <Button
+                                    variant="contained"
+                                    size='large'
+                                >
+                                    {`${detectedPlatform.downloadUrl ? '' : '尚未正式发布，自行编译'} ${detectedPlatform.name} 版`}
+                                </Button>
+                            </Link>
+                            {detectedPlatform && detectedPlatform.downloadUrl &&
+                                <Link href={detectedPlatform.sourceCodeUrl}>
+                                    <IconButton size='large'>
+                                        <CodeIcon/>
+                                    </IconButton>
                                 </Link>
-                                {detectedPlatform && detectedPlatform.downloadUrl &&
-                                    <Link href={detectedPlatform.sourceCodeUrl}>
-                                        <IconButton size='large'>
-                                            <CodeIcon/>
-                                        </IconButton>
-                                    </Link>
-                                }
-                                
-                            </Stack> :
-                            <CircularProgress />
-                        }
-                        {detectedPlatform && detectedPlatform.experimental &&
-                            <Chip size="small" label="实验版" color="warning"/>
-                        }
-                        {
-                            detectedPlatform && detectedPlatform.authors &&
-                                <Typography variant="caption" display="block">
-                                    开发者 {detectedPlatform?.authors.map(author => {
+                            }
+                            
+                        </Stack> :
+                        <CircularProgress />
+                    }
+                    {detectedPlatform && detectedPlatform.experimental &&
+                        <Chip size="small" label="实验版" color="warning"/>
+                    }
+                    {
+                        detectedPlatform && detectedPlatform.authors &&
+                            <Typography variant="caption" display="block">
+                                开发者 {detectedPlatform?.authors.map(author => {
+                                return (
+                                    <span key={author.url}>
+                                        <Link href={author.url}>{author.name}</Link>
+                                        <span>{' '}</span>
+                                    </span>
+                                )
+                            })}
+                            </Typography>
+                    }
+                    {
+                        detectedPlatform && detectedPlatform.alternativeApp &&
+                            <Typography variant="caption" display="block">
+                                你也可以{detectedPlatform.alternativeApp.downloadUrl ? '试试' : '自行编译'} {detectedPlatform.alternativeApp.authors.map(author => {
                                     return (
                                         <span key={author.url}>
                                             <Link href={author.url}>{author.name}</Link>
                                             <span>{' '}</span>
                                         </span>
                                     )
-                                })}
-                                </Typography>
-                        }
-                        {
-                            detectedPlatform && detectedPlatform.alternativeApp &&
-                                <Typography variant="caption" display="block">
-                                    你也可以{detectedPlatform.alternativeApp.downloadUrl ? '试试' : '自行编译'} {detectedPlatform.alternativeApp.authors.map(author => {
+                                })} 的
+                                <Link
+                                    href={detectedPlatform.alternativeApp.downloadUrl ? detectedPlatform.alternativeApp.downloadUrl : detectedPlatform.alternativeApp.sourceCodeUrl}
+                                >
+                                    {detectedPlatform.alternativeApp.name} 版
+                                </Link>
+                                {
+                                    detectedPlatform.alternativeApp.downloadUrl &&
+                                        <Link href={detectedPlatform.alternativeApp.sourceCodeUrl}>
+                                            <IconButton size='small'>
+                                                <CodeIcon/>
+                                            </IconButton>
+                                        </Link>
+                                }
+                            </Typography>
+                    }
+                    <Link
+                        href='#'
+                        onClick={e => {
+                            e.preventDefault()
+                            setModalOpen(true)
+                        }}
+                    >
+                        <Typography variant="caption" display="block">
+                            所有平台
+                        </Typography>
+                    </Link>
+                </Stack>
+            </Grid>
+            <Modal
+                open={modalOpen}
+                onClose={onModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={modalStyle}>
+                    <Stack
+                        direction="column"
+                        spacing={2}
+                    >
+                        <Typography variant="h6" component="h2">
+                            所有平台
+                        </Typography>
+                        {AllPlatforms.map(p => {
+                            return (
+                                <Stack
+                                    key={p.name}
+                                    direction='column'
+                                >
+                                    <Stack
+                                        direction="row"
+                                        alignItems='center'
+                                        spacing={1}
+                                    >
+                                        {p.downloadUrl ?
+                                            <Link href={p.downloadUrl}>
+                                                <Typography>
+                                                    {p.name}
+                                                </Typography>
+                                            </Link> :
+                                            <Typography>
+                                                {p.name}
+                                            </Typography>
+                                        }
+                                        <Link href={p.sourceCodeUrl}>
+                                            <CodeIcon fontSize="small"/>
+                                        </Link>
+                                    </Stack>
+                                    {p.experimental &&
+                                        <Typography variant="caption" display="block">实验版</Typography>
+                                    }
+                                    <Typography variant="caption" display="block">
+                                        开发者 {p.authors.map(author => {
                                         return (
                                             <span key={author.url}>
                                                 <Link href={author.url}>{author.name}</Link>
                                                 <span>{' '}</span>
                                             </span>
                                         )
-                                    })} 的
-                                    <Link
-                                        href={detectedPlatform.alternativeApp.downloadUrl ? detectedPlatform.alternativeApp.downloadUrl : detectedPlatform.alternativeApp.sourceCodeUrl}
-                                    >
-                                        {detectedPlatform.alternativeApp.name} 版
-                                    </Link>
-                                    {
-                                        detectedPlatform.alternativeApp.downloadUrl &&
-                                            <Link href={detectedPlatform.alternativeApp.sourceCodeUrl}>
-                                                <IconButton size='small'>
-                                                    <CodeIcon/>
-                                                </IconButton>
-                                            </Link>
-                                    }
-                                </Typography>
-                        }
-                        <Link
-                            href='#'
-                            onClick={e => {
-                                e.preventDefault()
-                                setModalOpen(true)
-                            }}
-                        >
-                            <Typography variant="caption" display="block">
-                                所有平台
-                            </Typography>
-                        </Link>
-                    </Stack>
-                </Grid>
-                <Modal
-                    open={modalOpen}
-                    onClose={onModalClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={modalStyle}>
-                        <Stack
-                            direction="column"
-                            spacing={2}
-                        >
-                            <Typography variant="h6" component="h2">
-                                所有平台
-                            </Typography>
-                            {AllPlatforms.map(p => {
-                                return (
-                                    <Stack
-                                        key={p.name}
-                                        direction='column'
-                                    >
+                                    })}
+                                    </Typography>
+                                    {p.alternativeApp &&
                                         <Stack
                                             direction="row"
                                             alignItems='center'
                                             spacing={1}
                                         >
-                                            {p.downloadUrl ?
-                                                <Link href={p.downloadUrl}>
-                                                    <Typography>
-                                                        {p.name}
-                                                    </Typography>
-                                                </Link> :
-                                                <Typography>
-                                                    {p.name}
-                                                </Typography>
-                                            }
-                                            <Link href={p.sourceCodeUrl}>
-                                                <CodeIcon fontSize="small"/>
-                                            </Link>
-                                        </Stack>
-                                        {p.experimental &&
-                                            <Typography variant="caption" display="block">实验版</Typography>
-                                        }
-                                        <Typography variant="caption" display="block">
-                                            开发者 {p.authors.map(author => {
-                                            return (
-                                                <span key={author.url}>
-                                                    <Link href={author.url}>{author.name}</Link>
-                                                    <span>{' '}</span>
-                                                </span>
-                                            )
-                                        })}
-                                        </Typography>
-                                        {p.alternativeApp &&
-                                            <Stack
-                                                direction="row"
-                                                alignItems='center'
-                                                spacing={1}
-                                            >
-                                                {
-                                                    p.alternativeApp.downloadUrl ?
-                                                    <Link href={p.alternativeApp.downloadUrl}>
-                                                        <Typography variant="caption">
-                                                            {p.alternativeApp.name} 版
-                                                        </Typography>
-                                                    </Link> :
+                                            {
+                                                p.alternativeApp.downloadUrl ?
+                                                <Link href={p.alternativeApp.downloadUrl}>
                                                     <Typography variant="caption">
                                                         {p.alternativeApp.name} 版
                                                     </Typography>
-                                                }
-                                                <Link
-                                                    href={p.alternativeApp.sourceCodeUrl}
-                                                >
-                                                    <CodeIcon fontSize="small"/>
-                                                </Link>
+                                                </Link> :
                                                 <Typography variant="caption">
-                                                    开发者 {p.alternativeApp.authors.map(author => {
-                                                        return (
-                                                            <span key={author.url}>
-                                                                <Link href={author.url}>{author.name}</Link>
-                                                                <span>{' '}</span>
-                                                            </span>
-                                                        )
-                                                    })}
+                                                    {p.alternativeApp.name} 版
                                                 </Typography>
-                                            </Stack>
-                                        }
-                                    </Stack>
-                                )
-                            })}
-                        </Stack>
-                    </Box>
-                </Modal>
-            </Grid>
-            <Link href="https://ktachibana.party/cloudemoticon/privacy">
-                <Typography variant="caption" display="block" align="center" gutterBottom>
-                    隐私政策
-                </Typography>
-            </Link>
-        </>
+                                            }
+                                            <Link
+                                                href={p.alternativeApp.sourceCodeUrl}
+                                            >
+                                                <CodeIcon fontSize="small"/>
+                                            </Link>
+                                            <Typography variant="caption">
+                                                开发者 {p.alternativeApp.authors.map(author => {
+                                                    return (
+                                                        <span key={author.url}>
+                                                            <Link href={author.url}>{author.name}</Link>
+                                                            <span>{' '}</span>
+                                                        </span>
+                                                    )
+                                                })}
+                                            </Typography>
+                                        </Stack>
+                                    }
+                                </Stack>
+                            )
+                        })}
+                    </Stack>
+                </Box>
+            </Modal>
+        </Grid>
     )
 }
