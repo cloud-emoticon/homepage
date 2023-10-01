@@ -17,6 +17,7 @@ export default function AndroidPrivacy() {
             <video autoPlay muted loop style={{ height: '75px' }}>
                 <source src="/android-quick-enter.mp4" type="video/mp4" />
             </video>
+            <p>Notice that this feature only works on Android Lollipop (5.0) and above</p>
             <h2>2. Enable this feature</h2>
             <p>1. Open the app. From the three dots on the top-right corner, go to &quot;Settings&quot;</p>
             <p>2. Tap &quot;Set up quick enter&quot;</p>
