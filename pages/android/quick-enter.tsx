@@ -14,14 +14,14 @@ export default function AndroidPrivacy() {
             <p>For example, if you have an emoticon &quot;ლ(╹◡╹ლ)&quot; with shortcut &quot;kt&quot;</p>
             <p>Anywhere you type &quot; :kt&quot; (notice the space and :) will then be replaced by &quot;ლ(╹◡╹ლ)&quot;</p>
             <p>Here is a video demo. Also notice that you do not need a space if it is beginning of the text.</p>
-            <video autoPlay muted loop style={{ height: '75px' }}>
+            <video autoPlay muted loop style={{ width: '100%', height: '75px', objectFit: 'contain' }}>
                 <source src="/android-quick-enter.mp4" type="video/mp4" />
             </video>
             <p>Notice that this feature only works on Android Lollipop (5.0) and above</p>
             <h2>2. Enable this feature</h2>
             <p>1. Open the app. From the three dots on the top-right corner, go to &quot;Settings&quot;</p>
             <p>2. Tap &quot;Set up quick enter&quot;</p>
-            <p>3. Make sure you have reviewed the <Link href="/android/privacy">privacy policy</Link> and tap &quot;Proceed&quot;</p>
+            <p>3. Make sure you have reviewed the <Link href="/android/privacy">privacy policy</Link> and tap &quot;I agree&quot;</p>
             <p>4. Enable &quot;Cloud Emoticon&quot; in the next screen. Here are detailed instructions for some brands</p>
             <h3>Pixel devices</h3>
             <p>1. Tap &quot;Cloud Emoticon&quot; under &quot;Downloaded apps&quot;</p>
