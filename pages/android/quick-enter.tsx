@@ -13,7 +13,7 @@ export default function AndroidPrivacy() {
             <p>&quot;Quick enter&quot; is a feature that allows you to quickly enter an emoticon by its shortcut</p>
             <p>For example, if you have an emoticon &quot;ლ(╹◡╹ლ)&quot; with shortcut &quot;kt&quot;</p>
             <p>Anywhere you type &quot; :kt&quot; (notice the space and :) will then be replaced by &quot;ლ(╹◡╹ლ)&quot;</p>
-            <p>Here is a video demo. Also notice that you do not need a space if it's beginning of the text.</p>
+            <p>Here is a video demo. Also notice that you do not need a space if it is beginning of the text.</p>
             <video autoPlay muted loop style={{ height: '75px' }}>
                 <source src="/android-quick-enter.mp4" type="video/mp4" />
             </video>
