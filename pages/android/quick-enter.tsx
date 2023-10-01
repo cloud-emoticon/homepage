@@ -36,7 +36,7 @@ export default function AndroidPrivacy() {
             <p>1. Open the app and go to the &quot;Bookmarks&quot; tab</p>
             <p>2. For any of your bookmark, tap the pencil button on the right</p>
             <p>3. Enter a shortcut for the emoticon and tap &quot;OK&quot;</p>
-            <h3>4. Disable this feature</h3>
+            <h2>4. Disable this feature</h2>
             <p>1. Open the app. From the three dots on the top-right corner, go to &quot;Settings&quot;</p>
             <p>2. Tap &quot;Disable quick enter&quot;</p>
             <p>3. Disable &quot;Cloud Emoticon&quot; in the next screen. Here are detailed instructions for some brands</p>
