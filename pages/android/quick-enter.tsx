@@ -21,7 +21,7 @@ export default function AndroidPrivacy() {
             <h2>2. Enable this feature</h2>
             <p>1. Open the app. From the three dots on the top-right corner, go to &quot;Settings&quot;</p>
             <p>2. Tap &quot;Set up quick enter&quot;</p>
-            <p>3. Make sure you have reviewed the <Link href="/android/privacy">privacy policy</Link> and tap &quot;I agree&quot;</p>
+            <p>3. Make sure you have reviewed the disclosure and tap &quot;I agree&quot;</p>
             <p>4. Enable &quot;Cloud Emoticon&quot; in the next screen. Here are detailed instructions for some brands</p>
             <h3>Pixel devices</h3>
             <p>1. Tap &quot;Cloud Emoticon&quot; under &quot;Downloaded apps&quot;</p>
